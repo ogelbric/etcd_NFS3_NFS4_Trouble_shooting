@@ -3,7 +3,6 @@
 # Message 
 ```
 apply request took too long
-
 ```
 # Simple Disk speed test
 #Linux
@@ -23,23 +22,32 @@ Action: If wal_fsync latency increases significantly, it likely indicates a need
 
 # etcd_disk_wal_fsync_duration_seconds
 #Disk fsync latency (etcd_disk_wal_fsync_duration_seconds): Crucial for etcd stability. Should be at p99.
+```
 watch -n 1 'curl -s http://localhost:2381/metrics | grep etcd_disk_wal_fsync_duration_seconds'
+```
 #
 # etcd_disk_backend_commit_duration_seconds
 #Backend commit latency (etcd_disk_backend_commit_duration_seconds): Time taken to commit data to the backend.
+```
 watch -n 1 'curl -s http://localhost:2381/metrics | grep etcd_disk_backend_commit_duration_seconds'
+```
 #
 # etcd_network_peer_round_trip_time_seconds
 #Peer round-trip time (etcd_network_peer_round_trip_time_seconds): Measures network latency between etcd members.
+```
 watch -n 1 'curl -s http://localhost:2381/metrics | grep etcd_network_peer_round_trip_time_seconds'
-
+```
 # Testing etcd Disk Latency with fio (NFS) 
 #Run this from the control plane node targeting your NFS mount to simulate etcd's WAL writing: 
+```
 fio --rw=write --ioengine=sync --fdatasync=1 --directory=/path/to/nfs/mount --size=22m --bs=2300 --name=etcd-test
+```
 
 # Checking NFS Specific Latency
+```
 nfsiostat 1
 nfsstat -c
+```
 
 # This etcd_server_slow_apply_total is the smoking gun on storage latency. 
 ```
